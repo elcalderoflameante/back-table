@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Depurar servidor Node.js",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/src/server.js", // Cambia a server.js si es tu punto de entrada
+            "envFile": "${workspaceFolder}/.env",          // Carga variables de entorno
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "console": "integratedTerminal"
+        }
+    ]
+}
