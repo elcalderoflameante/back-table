@@ -1,7 +1,7 @@
 const verificarRedLocal = (req, res, next) => {
   const ip = req.ip || req.connection.remoteAddress;
 
-  console.log('IP del cliente:', ip);
+  //console.log('IP del cliente:', ip);
 
   // Verifica si la IP es local (127.0.0.1 o ::1)
   if (ip === '127.0.0.1' || 

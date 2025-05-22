@@ -3,12 +3,23 @@ const router = express.Router();
 const Solicitud = require('../models/Solicitud');
 const { getIO } = require('../socket');
 const verificarRedLocal = require('../middlewares/verificarRedLocal');
+const { Op } = require('sequelize');
 
 // Obtener solicitudes activas (nuevas + en proceso)
 router.get('/activas', async (req, res, next) => {
   try {
+    // Obtener el inicio y fin del día actual
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+    
     const solicitudes = await Solicitud.findAll({
-      where: { estado: ['nuevo', 'proceso'] },
+      where: {
+        fecha_creacion: {
+          [Op.between]: [startOfDay, endOfDay],
+        },
+      },
       order: [['fecha_creacion', 'DESC']],
     });
     res.json(solicitudes);
