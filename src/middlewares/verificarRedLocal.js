@@ -1,15 +1,22 @@
 const verificarRedLocal = (req, res, next) => {
   const ip = req.ip || req.connection.remoteAddress;
+  const prefix = process.env.REDE_LOCAL_PREFIX || '192.168.1.';
 
-  //console.log('IP del cliente:', ip);
+  // Permitir localhost
+  if (
+    ip === '127.0.0.1' ||
+    ip === '::1' ||
+    ip.startsWith('::ffff:127.0.0.1')
+  ) {
+    return next();
+  }
 
-  // Verifica si la IP es local (127.0.0.1 o ::1)
-  if (ip === '127.0.0.1' || 
-      ip === '::1' || 
-      ip.startsWith('::ffff:127.0.0.1') ||
-      ip.startsWith('::ffff:192.168.1') // Cambia esto según tu red local  
-    ) {
-    return next(); // Permitir acceso
+  // Permitir solo si la IP comienza con el prefijo de red local
+  if (
+    ip.startsWith(prefix) ||
+    ip.startsWith('::ffff:' + prefix)
+  ) {
+    return next();
   }
 
   // Si no es local, rechazar la solicitud
