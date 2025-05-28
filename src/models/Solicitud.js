@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');  // Asegúrate de que la ruta sea correcta
+const sequelize = require('../config/db');
 
 const Solicitud = sequelize.define('Solicitud', {
   id: {
@@ -35,8 +35,8 @@ const Solicitud = sequelize.define('Solicitud', {
     allowNull: true,
   },
 }, {
-  tableName: 'solicitudes',  // Nombre de la tabla en PostgreSQL
-  timestamps: false,        // Desactiva los campos createdAt y updatedAt
+  tableName: 'solicitudes',  // minúsculas y plural
+  timestamps: false,
 });
 
 module.exports = Solicitud;

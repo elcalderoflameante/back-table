@@ -3,10 +3,11 @@ const router = express.Router();
 const Solicitud = require('../models/Solicitud');
 const { getIO } = require('../socket');
 const verificarRedLocal = require('../middlewares/verificarRedLocal');
+const authMiddleware = require('../middlewares/authMiddleware');
 const { Op } = require('sequelize');
 
 // Obtener solicitudes activas (nuevas + en proceso)
-router.get('/activas', async (req, res, next) => {
+router.get('/activas', authMiddleware,async (req, res, next) => {
   try {
     // Obtener el inicio y fin del día actual
     const startOfDay = new Date();
@@ -29,7 +30,7 @@ router.get('/activas', async (req, res, next) => {
 });
 
 // Iniciar atención (nuevo -> proceso)
-router.patch('/:id/procesar', async (req, res, next) => {
+router.patch('/:id/procesar', authMiddleware, async (req, res, next) => {
   try {
     const solicitud = await Solicitud.findByPk(req.params.id);
     if (!solicitud) {
@@ -57,7 +58,7 @@ router.patch('/:id/procesar', async (req, res, next) => {
 });
 
 // Finalizar atención (proceso -> atendido)
-router.patch('/:id/finalizar', async (req, res, next) => {
+router.patch('/:id/finalizar', authMiddleware, async (req, res, next) => {
   try {
     const solicitud = await Solicitud.findByPk(req.params.id);
     if (!solicitud) {
