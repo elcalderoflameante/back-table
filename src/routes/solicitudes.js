@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Solicitud = require('../models/Solicitud');
+const Suscripcion = require('../models/Suscripcion');
 const { getIO } = require('../socket');
 const verificarRedLocal = require('../middlewares/verificarRedLocal');
 const authMiddleware = require('../middlewares/authMiddleware');
 const { Op } = require('sequelize');
+const webpush = require('../utils/webpush');
 
 // Obtener solicitudes activas (nuevas + en proceso)
 router.get('/activas', authMiddleware,async (req, res, next) => {
@@ -100,6 +102,22 @@ router.post('/', verificarRedLocal, async (req, res, next) => {
       tipo,
       estado: 'nuevo',
       fecha_creacion: new Date(),
+    });
+
+    // Notificación push a todos los suscritos
+    const suscripciones = await Suscripcion.findAll();
+    const payload = JSON.stringify({
+      title: 'Nueva Solicitud',
+      body: `Mesa ${mesa} ha realizado una nueva solicitud de tipo "${tipo}".`
+    });
+    suscripciones.forEach(sub => {
+      webpush.sendNotification(
+        {
+          endpoint: sub.endpoint,
+          keys: sub.keys
+        },
+        payload
+      ).catch(() => {});
     });
 
     getIO().emit('nueva_solicitud', solicitud);
