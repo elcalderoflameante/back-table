@@ -21,7 +21,6 @@ router.post('/register', async (req, res, next) => {
 // Login de usuario
 router.post('/login', async (req, res, next) => {
   try {
-    console.log('Login attempt:', req.body);
     const { username, password } = req.body;
     if (!username || !password) {
       return res.status(400).json({ message: 'Username y password son requeridos' });
@@ -33,7 +32,6 @@ router.post('/login', async (req, res, next) => {
     if (!valid) return res.status(401).json({ message: 'Credenciales inválidas' });
 
     const token = jwt.sign({ id: usuario.id, username: usuario.username }, JWT_SECRET, { expiresIn: '8h' });
-    console.log('Token generado:', token);
     res.json({ token });
   } catch (err) {
     next(err);

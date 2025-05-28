@@ -3,8 +3,9 @@ const { initSocket, getIO } = require('./socket');
 const socketHandlers = require('./handlers/socketHandlers');
 const app = require('./app');
 const sequelize = require('./config/db');
-const Solicitud = require('./models/Solicitud');
-const Usuario = require('./models/Usuario'); // Asegúrate de importar el modelo
+//const Solicitud = require('./models/Solicitud');
+//const Usuario = require('./models/Usuario'); 
+//const Suscripcion = require('./models/Suscripcion');
 
 const PORT = process.env.PORT || 3001;
 const server = http.createServer(app);

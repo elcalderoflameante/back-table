@@ -3,6 +3,7 @@ const cors = require('cors');
 const solicitudesRoutes = require('./routes/solicitudes');
 const authRoutes = require('./routes/auth');
 const errorHandler = require('./middlewares/errorHandler');
+const pushRoutes = require('./routes/push');
 
 require('dotenv').config(); // Cargar variables de entorno desde .env
 
@@ -21,6 +22,7 @@ app.use(express.json());
 // Rutas
 app.use('/api/solicitudes', solicitudesRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/push', pushRoutes);
 
 // Middleware para manejar errores
 app.use(errorHandler);
