@@ -6,7 +6,6 @@ const Suscripcion = require('../models/Suscripcion');
 // Endpoint para registrar la suscripción del cliente
 router.post('/subscribe', async (req, res) => {
   const subscription = req.body;
-  console.log('Nueva suscripción recibida:', subscription);
   try {
     await Suscripcion.findOrCreate({
       where: { endpoint: subscription.endpoint },
