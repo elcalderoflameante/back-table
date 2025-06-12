@@ -41,4 +41,18 @@ router.post('/notify', async (req, res) => {
   }
 });
 
+// Eliminar suscripción (cuando el usuario cierra sesión)
+router.post('/unsubscribe', async (req, res) => {
+  const { endpoint } = req.body;
+  if (!endpoint) {
+    return res.status(400).json({ message: 'Endpoint requerido' });
+  }
+  try {
+    await Suscripcion.destroy({ where: { endpoint } });
+    res.json({ message: 'Suscripción eliminada' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al eliminar la suscripción' });
+  }
+});
+
 module.exports = router;
